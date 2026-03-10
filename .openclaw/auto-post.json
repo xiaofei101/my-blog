@@ -1,0 +1,74 @@
+{
+  "name": "每日博客自动发布",
+  "description": "每天自动生成并发布技术博客文章",
+  "schedule": "0 8 * * *",
+  "timezone": "Asia/Shanghai",
+  "enabled": true,
+  
+  "tasks": [
+    {
+      "name": "生成博客文章",
+      "type": "script",
+      "script": "generate-post.js",
+      "timeout": 120
+    },
+    {
+      "name": "生成静态文件",
+      "command": "hexo clean && hexo generate",
+      "timeout": 60
+    },
+    {
+      "name": "提交到 Git",
+      "command": "git add . && git commit -m \"Daily post: $(date +%Y-%m-%d)\" || echo 'No changes'",
+      "timeout": 30
+    },
+    {
+      "name": "推送到 GitHub",
+      "command": "git push origin main",
+      "timeout": 60
+    },
+    {
+      "name": "部署到 Vercel",
+      "command": "vercel --prod --yes",
+      "timeout": 120
+    }
+  ],
+  
+  "contentSources": [
+    {
+      "type": "tech-news",
+      "keywords": ["前端", "JavaScript", "React", "AI", "OpenClaw", "Node.js"]
+    },
+    {
+      "type": "tutorial",
+      "topics": ["代码示例", "最佳实践", "工具使用", "问题解决"]
+    },
+    {
+      "type": "paper-review",
+      "fields": ["AI", "机器学习", "软件工程"]
+    }
+  ],
+  
+  "notifications": {
+    "onSuccess": {
+      "enabled": true,
+      "channel": "feishu",
+      "message": "✅ 今日博客已发布"
+    },
+    "onFailure": {
+      "enabled": true,
+      "channel": "feishu",
+      "message": "❌ 博客发布失败"
+    }
+  },
+  
+  "postSchedule": {
+    "monday": "技术教程",
+    "tuesday": "工具分享",
+    "wednesday": "项目实战",
+    "thursday": "论文解读",
+    "friday": "学习心得",
+    "saturday": "周末随笔",
+    "sunday": "周总结"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "name": "每日博客自动发布",
+  "description": "每天早上 8 点自动生成并发布博客文章",
+  "enabled": true,
+  
+  "trigger": {
+    "type": "schedule",
+    "cron": "0 8 * * *",
+    "timezone": "Asia/Shanghai"
+  },
+  
+  "workflow": [
+    {
+      "step": 1,
+      "name": "生成今日博客",
+      "action": "exec",
+      "command": "node .openclaw/generate-post.js",
+      "cwd": "C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog",
+      "timeout": 60
+    },
+    {
+      "step": 2,
+      "name": "生成静态文件",
+      "action": "exec",
+      "command": "hexo clean && hexo generate",
+      "cwd": "C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog",
+      "timeout": 120
+    },
+    {
+      "step": 3,
+      "name": "提交更改",
+      "action": "exec",
+      "command": "git add . && git commit -m \"Daily: $(Get-Date -Format 'yyyy-MM-dd')\" || Write-Host 'No changes'",
+      "cwd": "C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog",
+      "timeout": 30
+    },
+    {
+      "step": 4,
+      "name": "推送到 GitHub",
+      "action": "exec",
+      "command": "git push origin main",
+      "cwd": "C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog",
+      "timeout": 60
+    },
+    {
+      "step": 5,
+      "name": "部署到 Vercel",
+      "action": "exec",
+      "command": "vercel --prod --yes",
+      "cwd": "C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog",
+      "timeout": 180
+    }
+  ],
+  
+  "notifications": {
+    "feishu": {
+      "enabled": true,
+      "onSuccess": "✅ 博客发布成功\n📝 标题：{title}\n🔗 链接：https://my-blog-phi-gules.vercel.app",
+      "onFailure": "❌ 博客发布失败\n⚠️ 错误：{error}\n请检查日志"
+    }
+  },
+  
+  "retry": {
+    "maxAttempts": 3,
+    "delayMinutes": 5
+  },
+  
+  "logging": {
+    "enabled": true,
+    "path": "C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog\\.openclaw\\logs\\daily-post.log",
+    "maxSize": "10MB",
+    "maxFiles": 30
+  }
+}
