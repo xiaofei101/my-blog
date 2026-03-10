@@ -1,0 +1,27 @@
+{
+  "name": "博客日常维护",
+  "description": "每日自动检查博客状态、生成报告",
+  "schedule": "0 9 * * *",
+  "tasks": [
+    {
+      "name": "检查 Hexo 生成",
+      "command": "cd C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog && hexo generate",
+      "timeout": 60
+    },
+    {
+      "name": "检查 Git 状态",
+      "command": "cd C:\\Users\\Lenovo\\.openclaw\\workspace\\my-blog && git status",
+      "timeout": 10
+    },
+    {
+      "name": "检查未提交更改",
+      "type": "notification",
+      "condition": "git_status_has_changes"
+    }
+  ],
+  "notifications": {
+    "onSuccess": false,
+    "onFailure": true,
+    "channel": "feishu"
+  }
+}
