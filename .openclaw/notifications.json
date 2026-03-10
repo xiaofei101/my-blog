@@ -1,0 +1,220 @@
+{
+  "name": "多通道通知配置",
+  "version": "1.0",
+  "description": "配置多个通知渠道，确保重要通知必达",
+  
+  "channels": {
+    "feishu": {
+      "name": "飞书",
+      "enabled": true,
+      "type": "webhook",
+      "config": {
+        "webhook": "https://open.feishu.cn/open-apis/bot/v2/hook/xxx",
+        "secret": ""
+      },
+      "templates": {
+        "success": {
+          "msgType": "interactive",
+          "title": "✅ 博客发布成功",
+          "content": [
+            {"key": "📝 标题", "value": "{title}"},
+            {"key": "🔗 链接", "value": "{url}"},
+            {"key": "⏰ 时间", "value": "{time}"}
+          ]
+        },
+        "failure": {
+          "msgType": "text",
+          "content": "❌ 博客发布失败\n⚠️ 错误：{error}\n📅 时间：{time}\n请检查日志"
+        }
+      }
+    },
+    
+    "dingtalk": {
+      "name": "钉钉",
+      "enabled": false,
+      "type": "webhook",
+      "config": {
+        "webhook": "https://oapi.dingtalk.com/robot/send?access_token=xxx",
+        "secret": "SECxxx"
+      },
+      "templates": {
+        "success": {
+          "msgType": "markdown",
+          "title": "博客发布成功",
+          "text": "## ✅ 博客发布成功\n- **标题**: {title}\n- **链接**: [{url}]({url})\n- **时间**: {time}"
+        },
+        "failure": {
+          "msgType": "text",
+          "content": "❌ 博客发布失败\n错误：{error}\n时间：{time}"
+        }
+      }
+    },
+    
+    "wecom": {
+      "name": "企业微信",
+      "enabled": false,
+      "type": "webhook",
+      "config": {
+        "webhook": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx"
+      },
+      "templates": {
+        "success": {
+          "msgType": "markdown",
+          "content": "## ✅ 博客发布成功\n> 标题：{title}\n> 链接：[{url}]({url})\n> 时间：{time}"
+        },
+        "failure": {
+          "msgType": "text",
+          "content": "❌ 博客发布失败\n错误：{error}\n时间：{time}"
+        }
+      }
+    },
+    
+    "telegram": {
+      "name": "Telegram",
+      "enabled": false,
+      "type": "bot",
+      "config": {
+        "token": "bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+        "chatId": "123456789",
+        "parseMode": "Markdown"
+      },
+      "templates": {
+        "success": {
+          "text": "✅ *博客发布成功*\n\n📝 标题：{title}\n🔗 链接：{url}\n⏰ 时间：{time}"
+        },
+        "failure": {
+          "text": "❌ *博客发布失败*\n\n⚠️ 错误：{error}\n📅 时间：{time}"
+        }
+      }
+    },
+    
+    "discord": {
+      "name": "Discord",
+      "enabled": false,
+      "type": "webhook",
+      "config": {
+        "webhook": "https://discord.com/api/webhooks/xxx/yyy"
+      },
+      "templates": {
+        "success": {
+          "embeds": [{
+            "title": "✅ 博客发布成功",
+            "description": "📝 标题：{title}",
+            "url": "{url}",
+            "color": 3066993,
+            "timestamp": "{isoTime}"
+          }]
+        },
+        "failure": {
+          "embeds": [{
+            "title": "❌ 博客发布失败",
+            "description": "⚠️ {error}",
+            "color": 15158332,
+            "timestamp": "{isoTime}"
+          }]
+        }
+      }
+    },
+    
+    "slack": {
+      "name": "Slack",
+      "enabled": false,
+      "type": "webhook",
+      "config": {
+        "webhook": "https://hooks.slack.com/services/T00/B00/xxx",
+        "channel": "#blog-updates",
+        "username": "Blog Bot",
+        "icon_emoji": ":robot_face:"
+      },
+      "templates": {
+        "success": {
+          "text": "✅ 博客发布成功\n📝 标题：<{url}|{title}>\n⏰ 时间：{time}"
+        },
+        "failure": {
+          "text": "❌ 博客发布失败\n⚠️ {error}\n📅 时间：{time}"
+        }
+      }
+    },
+    
+    "email": {
+      "name": "邮件",
+      "enabled": false,
+      "type": "smtp",
+      "config": {
+        "smtp": {
+          "host": "smtp.qq.com",
+          "port": 465,
+          "secure": true,
+          "auth": {
+            "user": "your-email@qq.com",
+            "pass": "your-auth-code"
+          }
+        },
+        "from": "博客通知 <your-email@qq.com>",
+        "to": ["receiver@email.com"]
+      },
+      "templates": {
+        "success": {
+          "subject": "✅ 博客发布成功：{title}",
+          "html": "<!DOCTYPE html><html><body style='font-family:Arial'><h1 style='color:green'>✅ 博客发布成功</h1><p><strong>标题：</strong>{title}</p><p><strong>链接：</strong><a href='{url}'>查看文章</a></p><p><strong>时间：</strong>{time}</p></body></html>"
+        },
+        "failure": {
+          "subject": "❌ 博客发布失败",
+          "html": "<!DOCTYPE html><html><body style='font-family:Arial'><h1 style='color:red'>❌ 博客发布失败</h1><p><strong>错误：</strong>{error}</p><p><strong>时间：</strong>{time}</p><p>请检查日志排查问题</p></body></html>"
+        }
+      }
+    },
+    
+    "wechat": {
+      "name": "微信 (ServerChan)",
+      "enabled": false,
+      "type": "api",
+      "config": {
+        "provider": "serverchan",
+        "sendKey": "SCTxxx",
+        "channel": "wechat"
+      },
+      "templates": {
+        "success": {
+          "title": "博客发布成功",
+          "desp": "## ✅ 博客发布成功\n\n**标题**: {title}\n\n**链接**: [{url}]({url})\n\n**时间**: {time}"
+        },
+        "failure": {
+          "title": "博客发布失败",
+          "desp": "## ❌ 博客发布失败\n\n**错误**: {error}\n\n**时间**: {time}\n\n请检查日志"
+        }
+      }
+    }
+  },
+  
+  "rules": {
+    "onSuccess": {
+      "enabled": true,
+      "channels": ["feishu", "wechat"],
+      "delay": 0
+    },
+    "onFailure": {
+      "enabled": true,
+      "channels": ["feishu", "dingtalk", "email"],
+      "delay": 0,
+      "retry": {
+        "enabled": true,
+        "maxAttempts": 3,
+        "interval": 300
+      }
+    },
+    "onRetry": {
+      "enabled": true,
+      "channels": ["feishu"],
+      "template": "retry"
+    }
+  },
+  
+  "variables": {
+    "title": "文章标题",
+    "url": "https://my-blog-phi-gules.vercel.app",
+    "time": "当前时间",
+    "isoTime": "ISO 格式时间",
+    "error": "错误信息"
+  }
+}

@@ -53,6 +53,8 @@
   ],
   
   "notifications": {
+    "useMultiChannel": true,
+    "config": ".openclaw/notifications.json",
     "feishu": {
       "enabled": true,
       "onSuccess": "✅ 博客发布成功\n📝 标题：{title}\n🔗 链接：https://my-blog-phi-gules.vercel.app",
