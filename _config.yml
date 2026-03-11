@@ -11,7 +11,7 @@ language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
-url: https://my-blog-xiaofei101.vercel.app
+url: https://my-blog-phi-gules.vercel.app
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -92,7 +92,7 @@ search:
 # Sitemap
 sitemap:
   path: sitemap.xml
-  prefix: https://my-blog-xiaofei101.vercel.app/
+  prefix: https://my-blog-phi-gules.vercel.app/
 
 # RSS Feed
 feed:
