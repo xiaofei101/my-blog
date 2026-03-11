@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "public",
+  "devCommand": "npm run server",
   "routes": [
     {
       "src": "/(.*\\.xml)$",
@@ -11,6 +14,24 @@
       "src": "/(.*\\.html)$",
       "headers": {
         "cache-control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "src": "/css/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/js/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/images/(.*)",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
       }
     },
     {
